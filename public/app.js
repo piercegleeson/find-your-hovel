@@ -65,7 +65,7 @@ class PropertyRadar {
   async _registerSW() {
     if (!('serviceWorker' in navigator)) return;
     try {
-      const reg = await navigator.serviceWorker.register('/sw.js');
+      const reg = await navigator.serviceWorker.register('sw.js');
       console.log('[SW] Registered, scope:', reg.scope);
     } catch (e) {
       console.warn('[SW] Registration failed:', e);
