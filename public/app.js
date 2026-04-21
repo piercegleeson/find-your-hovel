@@ -1,6 +1,7 @@
 'use strict';
 
 // ── Constants ─────────────────────────────────────────────────────────────────
+const API_BASE         = 'https://find-your-hovel.pierce-408.workers.dev'; 
 const MIN_MOVE_METRES  = 500;   // minimum distance before re-querying
 const POLL_INTERVAL_MS = 60_000; // re-query even if stationary (1 min)
 const MAX_PRICE        = 120000;
@@ -191,7 +192,7 @@ class PropertyRadar {
     this._setStatus(`Searching near ${pos.lat.toFixed(3)}, ${pos.lng.toFixed(3)}…`, 'searching');
 
     try {
-      const url = `/api/properties?lat=${pos.lat}&lng=${pos.lng}`;
+      const url = `${API_BASE}/api/properties?lat=${pos.lat}&lng=${pos.lng}`;
       const res  = await fetch(url);
       const data = await res.json();
 
