@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(curl -s \"https://dist-property-frontend-daft.daft.ie/_next/static/chunks/pages/search-f543d504790559b5.js\" -H \"User-Agent: Mozilla/5.0\" -H \"Referer: https://www.daft.ie/\")",
+      "Bash(python3:*)"
+    ]
+  }
+}

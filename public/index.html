@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
+  <meta name="theme-color" content="#1e3a5f">
+  <meta name="description" content="Find properties under €120k in Ireland as you drive around">
+
+  <!-- iOS PWA -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Find Your Hovel">
+  <link rel="apple-touch-icon" href="/icons/icon.svg">
+
+  <title>Find Your Hovel</title>
+  <link rel="manifest" href="/manifest.json">
+  <link rel="icon" href="/icons/icon.svg">
+
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <!-- Header -->
+    <header id="app-header" class="app-header">
+      <div class="header-top">
+        <div class="header-title">
+          <div id="radar-dot" class="radar-dot" title="Tracking status"></div>
+          <h1>Find Your Hovel</h1>
+        </div>
+        <span class="badge-count">
+          <span id="prop-count">0</span> found
+        </span>
+      </div>
+      <div id="status-bar" class="status-bar status-info">Tap Start to begin tracking</div>
+    </header>
+
+    <!-- Map -->
+    <div id="map"></div>
+
+    <!-- Bottom panel -->
+    <div id="bottom-panel" class="bottom-panel">
+      <div id="panel-handle" class="panel-drag-handle" title="Toggle panel">
+        <div class="handle-bar"></div>
+      </div>
+
+      <!-- Buttons -->
+      <div class="controls-row">
+        <button id="btn-start"  class="btn btn-start">▶ Start</button>
+        <button id="btn-stop"   class="btn btn-stop"   disabled>■ Stop</button>
+        <button id="btn-follow" class="btn btn-follow  active" title="Following — tap map to browse freely">⊙ Follow</button>
+        <button id="btn-test"   class="btn btn-outline" title="Test alert sound & notification">🔔 Test</button>
+      </div>
+
+      <!-- List -->
+      <div class="list-header">
+        <h2>Nearby Listings</h2>
+        <span class="price-cap-badge">Under €120k</span>
+      </div>
+      <div id="property-list" class="property-list">
+        <p class="empty-state">No properties found yet.<br>Start tracking to discover nearby listings.</p>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="/app.js"></script>
+</body>
+</html>
