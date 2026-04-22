@@ -1,7 +1,7 @@
 'use strict';
 
 // ── Constants ─────────────────────────────────────────────────────────────────
-const API_BASE         = 'https://find-your-hovel.pierce-408.workers.dev'; 
+const API_BASE         = 'https://find-your-hovel.pierce-408.workers.dev';
 const MIN_MOVE_METRES  = 500;   // minimum distance before re-querying
 const POLL_INTERVAL_MS = 60_000; // re-query even if stationary (1 min)
 const MAX_PRICE        = 120000;
@@ -50,7 +50,6 @@ class PropertyRadar {
   _bindUI() {
     document.getElementById('btn-start') .addEventListener('click', () => this.startTracking());
     document.getElementById('btn-stop')  .addEventListener('click', () => this.stopTracking());
-    document.getElementById('btn-test')  .addEventListener('click', () => this._testAlert());
     document.getElementById('btn-follow').addEventListener('click', () => this._setFollowing(true));
 
     // Collapse / expand bottom panel on handle tap
@@ -367,22 +366,6 @@ ${prop.address || prop.title || 'Address unknown'}<br>
     setTimeout(() => header.classList.remove('flash'), 1200);
   }
 
-  // ── Test ─────────────────────────────────────────────────────────────────────
-  _testAlert() {
-    const fakeProps = [{
-      id: `test-${Date.now()}`,
-      price: 87500,
-      address: 'Test Property, Main St, Athlone',
-      title: 'Test Listing',
-      county: 'Westmeath',
-      propertyType: 'Cottage',
-      bedrooms: '2',
-      latitude: 53.4239,
-      longitude: -7.9407,
-      url: ''
-    }];
-    this._processResults(fakeProps);
-  }
 
   // ── Helpers ─────────────────────────────────────────────────────────────────
   _resetResults() {
