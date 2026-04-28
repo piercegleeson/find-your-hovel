@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
-  <meta name="theme-color" content="#1e3a5f">
+  <meta name="theme-color" content="#2b2e2a">
   <meta name="description" content="Find properties under €120k in Ireland as you drive around">
 
   <!-- iOS PWA -->
@@ -16,6 +16,9 @@
   <link rel="manifest" href="manifest.json">
   <link rel="icon" href="icons/icon.svg">
 
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&display=swap">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
   <link rel="stylesheet" href="styles.css">
 </head>
@@ -32,7 +35,7 @@
           <span id="prop-count">0</span> found
         </span>
       </div>
-      <div id="status-bar" class="status-bar status-info">Tap Start to begin tracking</div>
+      <div id="status-bar" class="status-bar status-info">Acquiring GPS…</div>
     </header>
 
     <!-- Map -->
@@ -46,18 +49,17 @@
 
       <!-- Buttons -->
       <div class="controls-row">
-        <button id="btn-start"  class="btn btn-start">▶ Start</button>
-        <button id="btn-stop"   class="btn btn-stop"   disabled>■ Stop</button>
-        <button id="btn-follow" class="btn btn-follow  active" title="Following — tap map to browse freely">⊙ Follow</button>
+        <button id="btn-pause"  class="btn btn-pause">⏸ Pause</button>
+        <button id="btn-follow" class="btn btn-follow active" title="Following — tap map to browse freely">⊙ Follow Me</button>
       </div>
 
       <!-- List -->
       <div class="list-header">
-        <h2>Nearby Listings</h2>
+        <h2>Nearby Hovels</h2>
         <span class="price-cap-badge">Under €120k</span>
       </div>
       <div id="property-list" class="property-list">
-        <p class="empty-state">No properties found yet.<br>Start tracking to discover nearby listings.</p>
+        <p class="empty-state">Searching for nearby hovels…</p>
       </div>
     </div>
   </div>

@@ -33,13 +33,14 @@ class PropertyRadar {
     this._bindUI();
     this._registerSW();
     this._requestNotificationPermission();
+    this.startTracking();
   }
 
   _initMap() {
     this.map = L.map('map', { zoomControl: true }).setView([53.1424, -7.6921], 7);
 
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; <a href="https://openstreetmap.org/copyright">OpenStreetMap</a>',
+    L.tileLayer('https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Tiles style by <a href="https://www.hotosm.org/" target="_blank">Humanitarian OpenStreetMap Team</a> hosted by <a href="https://openstreetmap.fr/" target="_blank">OpenStreetMap France</a>',
       maxZoom: 19
     }).addTo(this.map);
 
@@ -48,8 +49,7 @@ class PropertyRadar {
   }
 
   _bindUI() {
-    document.getElementById('btn-start') .addEventListener('click', () => this.startTracking());
-    document.getElementById('btn-stop')  .addEventListener('click', () => this.stopTracking());
+    document.getElementById('btn-pause') .addEventListener('click', () => this._togglePause());
     document.getElementById('btn-follow').addEventListener('click', () => this._setFollowing(true));
 
     // Collapse / expand bottom panel on handle tap
@@ -103,7 +103,7 @@ class PropertyRadar {
     document.getElementById('radar-dot').classList.add('active');
   }
 
-  stopTracking() {
+  pauseTracking() {
     this.isTracking = false;
 
     if (this.watchId !== null) {
@@ -115,7 +115,12 @@ class PropertyRadar {
 
     document.getElementById('radar-dot').classList.remove('active');
     this._updateControlState();
-    this._setStatus('Tracking stopped', 'info');
+    this._setStatus('Paused', 'info');
+  }
+
+  _togglePause() {
+    if (this.isTracking) this.pauseTracking();
+    else this.startTracking();
   }
 
   // ── Position handling ────────────────────────────────────────────────────────
@@ -204,7 +209,7 @@ class PropertyRadar {
 
       const area = data.displayLocation || data.area;
       console.log(`[SEARCH] token=${token} got ${data.count} results for ${area}`);
-      this._setStatus(`${data.count} listing${data.count !== 1 ? 's' : ''} in ${area}`, 'success');
+      this._setStatus(`${data.count} listing${data.count !== 1 ? 's' : ''} near ${area}`, 'success');
       this._processResults(data.properties);
 
     } catch (err) {
@@ -216,7 +221,7 @@ class PropertyRadar {
 
   // ── Results ─────────────────────────────────────────────────────────────────
   _processResults(properties) {
-    const fresh = properties.filter(p => !this.seenIds.has(p.id));
+    const fresh = properties.filter(p => p.price > 0 && !this.seenIds.has(p.id));
     fresh.forEach(p => {
       this.seenIds.add(p.id);
       this._addMarker(p);
@@ -268,7 +273,7 @@ class PropertyRadar {
 
     return `${img}<strong>${price}</strong><br>
 ${prop.address || prop.title || 'Address unknown'}<br>
-<small style="color:#94a3b8">${details}</small>${link}`;
+<small style="color:rgba(244,225,195,0.55)">${details}</small>${link}`;
   }
 
   // ── Property card ────────────────────────────────────────────────────────────
@@ -400,8 +405,9 @@ ${prop.address || prop.title || 'Address unknown'}<br>
   }
 
   _updateControlState() {
-    document.getElementById('btn-start').disabled = this.isTracking;
-    document.getElementById('btn-stop') .disabled = !this.isTracking;
+    const btn = document.getElementById('btn-pause');
+    btn.textContent = this.isTracking ? '⏸ Pause' : '▶ Resume';
+    btn.classList.toggle('btn-pause--paused', !this.isTracking);
   }
 
   /** Haversine distance in metres between two {lat,lng} points */

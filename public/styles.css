@@ -1,135 +1,186 @@
-/* ── Reset & base ─────────────────────────────────────────────────────────── */
+/* ── Tokens ────────────────────────────────────────────────────────────────── */
+:root {
+  /* Backgrounds */
+  --bg:           #444942;
+  --bg-deep:      #2b2e2a;
+  --bg-surface:   #2b2e2a;
+  --bg-card:      #3a3e3c;
+  --flash-bg:     #4a2a10;
+
+  /* Palette — hex */
+  --cream:        #F4E1C3;
+  --orange:       #DC5901;
+  --orange-dim:   #b84a01;
+  --yellow:       #E8D55D;
+  --teal:         #88A6A4;
+  --white:        #ffffff;
+  --error:        #e07070;
+
+  /* Palette — RGB channels (for rgba() calls) */
+  --cream-rgb:    244, 225, 195;
+  --orange-rgb:   220, 89, 1;
+  --yellow-rgb:   232, 213, 93;
+  --teal-rgb:     136, 166, 164;
+
+  /* Derived alpha tokens */
+  --cream-dim:    rgba(var(--cream-rgb),  0.55);
+  --cream-lo:     rgba(var(--cream-rgb),  0.18);
+  --orange-faint: rgba(var(--orange-rgb), 0.12);
+  --orange-mid:   rgba(var(--orange-rgb), 0.25);
+  --yellow-faint: rgba(var(--yellow-rgb), 0.12);
+  --yellow-mid:   rgba(var(--yellow-rgb), 0.3);
+  --teal-faint:   rgba(var(--teal-rgb),   0.12);
+  --teal-mid:     rgba(var(--teal-rgb),   0.35);
+  --teal-dim:     rgba(var(--teal-rgb),   0.7);
+  --teal-0:       rgba(var(--teal-rgb),   0);
+  --border:       rgba(var(--cream-rgb),  0.08);
+  --border-hi:    rgba(var(--teal-rgb),   0.3);
+}
+
+/* ── Reset & base ──────────────────────────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 html, body {
   height: 100%;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  background: #0f172a;
-  color: #f1f5f9;
+  font-family: 'Outfit', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--cream);
   overflow: hidden;
 }
 
-/* ── Layout ───────────────────────────────────────────────────────────────── */
+/* ── Layout ────────────────────────────────────────────────────────────────── */
 .app-shell {
   display: flex;
   flex-direction: column;
-  height: 100dvh; /* dvh handles mobile browser chrome */
+  height: 100dvh;
 }
 
-/* ── Header ───────────────────────────────────────────────────────────────── */
+/* ── Header ────────────────────────────────────────────────────────────────── */
 .app-header {
   flex-shrink: 0;
-  background: linear-gradient(135deg, #1e3a5f 0%, #1e40af 100%);
+  background: var(--bg-deep);
   padding: 10px 16px 0;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.4);
-  transition: background 0.3s;
+  border-bottom: 1px solid var(--border);
+  transition: background 0.4s;
 }
 
 .app-header.flash {
-  background: linear-gradient(135deg, #065f46 0%, #059669 100%);
+  background: var(--flash-bg);
 }
 
 .header-top {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-bottom: 8px;
 }
 
 .header-title {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
 }
 
 .header-title h1 {
-  font-size: 1.1rem;
-  font-weight: 700;
-  letter-spacing: -0.02em;
+  font-size: 0.8rem;
+  letter-spacing:0.1em;
+  font-weight: 600;
+  text-transform:uppercase;
+  color: var(--cream);
   white-space: nowrap;
 }
 
+/* ── Radar dot ─────────────────────────────────────────────────────────────── */
 .radar-dot {
-  width: 10px;
-  height: 10px;
+  width: 14px;
+  height: 14px;
   border-radius: 50%;
-  background: #6b7280;
+  background: var(--cream-lo);
   flex-shrink: 0;
   transition: background 0.3s;
 }
+
 .radar-dot.active {
-  background: #10b981;
-  box-shadow: 0 0 0 3px rgba(16,185,129,0.3);
-  animation: pulse 2s infinite;
-}
-@keyframes pulse {
-  0%, 100% { box-shadow: 0 0 0 3px rgba(16,185,129,0.3); }
-  50%       { box-shadow: 0 0 0 6px rgba(16,185,129,0.1); }
+  background: var(--yellow);
+  animation: radar-ping 1.8s ease-out infinite;
 }
 
+@keyframes radar-ping {
+  0%   { box-shadow: 0 0 0 0   var(--yellow); }
+  70%  { box-shadow: 0 0 0 8px var(--yellow-0); }
+  100% { box-shadow: 0 0 0 0   var(--yellow-0); }
+}
+
+/* ── Badge ─────────────────────────────────────────────────────────────────── */
 .badge-count {
-  background: #fbbf24;
-  color: #1e293b;
+  background: var(--yellow-faint);
+  color: var(--yellow);
+  border: 1px solid var(--yellow-mid);
   font-size: 0.7rem;
   font-weight: 700;
-  padding: 2px 8px;
+  padding: 2px 10px;
   border-radius: 99px;
   min-width: 28px;
   text-align: center;
 }
 
-/* ── Status bar ───────────────────────────────────────────────────────────── */
+/* ── Status bar ────────────────────────────────────────────────────────────── */
 .status-bar {
   font-size: 0.72rem;
-  padding: 5px 0 6px;
-  color: #94a3b8;
+  font-weight: 600;
+  padding: 5px 0 7px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   transition: color 0.2s;
-}
-.status-info     { color: #94a3b8; }
-.status-success  { color: #34d399; }
-.status-error    { color: #f87171; }
-.status-searching { color: #60a5fa; }
+  border-top:1px solid var(--cream-dim);
+  margin:10px -16px 0;
+  padding:5px 16px 7px;
 
-/* ── Map ──────────────────────────────────────────────────────────────────── */
+}
+
+.status-info      { color: var(--cream-dim); }
+.status-success   { color: var(--teal); }
+.status-error     { color: var(--error); }
+.status-searching { color: var(--cream-dim); }
+
+/* ── Map ───────────────────────────────────────────────────────────────────── */
 #map {
   flex: 1;
-  min-height: 0; /* critical for flex shrink */
+  min-height: 0;
   z-index: 1;
 }
 
-/* ── Bottom panel ─────────────────────────────────────────────────────────── */
+/* ── Bottom panel ──────────────────────────────────────────────────────────── */
 .bottom-panel {
   flex-shrink: 0;
-  background: #1e293b;
-  border-top: 1px solid #334155;
+  background: var(--bg-surface);
+  border-top: 1px solid var(--border-hi);
   display: flex;
   flex-direction: column;
-  max-height: 42vh;
+  max-height: 44vh;
   transition: max-height 0.3s ease;
 }
 
-.bottom-panel.collapsed { max-height: 68px; }
+.bottom-panel.collapsed { max-height: 64px; }
 
 .panel-drag-handle {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 6px 0 4px;
+  padding: 8px 0 4px;
   cursor: pointer;
   flex-shrink: 0;
   touch-action: none;
 }
+
 .handle-bar {
   width: 36px;
   height: 4px;
-  border-radius: 2px;
-  background: #475569;
+  border-radius: 99px;
+  background: var(--cream-lo);
 }
 
-/* ── Controls ─────────────────────────────────────────────────────────────── */
+/* ── Controls ──────────────────────────────────────────────────────────────── */
 .controls-row {
   display: flex;
   gap: 8px;
@@ -139,25 +190,47 @@ html, body {
 
 .btn {
   flex: 1;
-  padding: 10px 8px;
+  padding: 11px 8px;
   border: none;
   border-radius: 10px;
-  font-size: 0.8rem;
-  font-weight: 600;
+  font-family: inherit;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing:0.02em;
   cursor: pointer;
-  transition: opacity 0.15s, transform 0.1s;
+  transition: opacity 0.15s, transform 0.1s, filter 0.15s;
   white-space: nowrap;
+  text-transform:uppercase;
 }
-.btn:active { transform: scale(0.97); }
-.btn:disabled { opacity: 0.4; cursor: not-allowed; }
+.btn:active   { transform: scale(0.97); }
+.btn:disabled { opacity: 0.3; cursor: not-allowed; }
 
-.btn-start   { background: #10b981; color: #fff; }
-.btn-stop    { background: #ef4444; color: #fff; }
-.btn-follow  { background: transparent; color: #64748b; border: 1px solid #475569; flex: 0 0 auto; transition: background 0.2s, color 0.2s, border-color 0.2s; }
-.btn-follow.active { background: rgba(59,130,246,0.15); color: #60a5fa; border-color: #3b82f6; }
-.btn-outline { background: transparent; color: #94a3b8; border: 1px solid #475569; flex: 0 0 auto; }
+.btn-pause {
+  background: var(--orange);
+  color: var(--white);
+}
+.btn-pause:not(:disabled):hover { filter: brightness(1.1); }
 
-/* ── Property list ────────────────────────────────────────────────────────── */
+.btn-pause.btn-pause--paused {
+  background: var(--bg-deep);
+  color: var(--cream-dim);
+  border: 1.5px solid var(--border-hi);
+  filter: none;
+}
+
+.btn-follow {
+  background: transparent;
+  color: var(--cream-dim);
+  border: 1.5px solid var(--border-hi);
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+}
+.btn-follow.active {
+  background: var(--teal-faint);
+  color: var(--teal);
+  border-color: var(--teal);
+}
+
+/* ── Property list ─────────────────────────────────────────────────────────── */
 .list-header {
   display: flex;
   align-items: center;
@@ -165,19 +238,22 @@ html, body {
   padding: 0 12px 6px;
   flex-shrink: 0;
 }
+
 .list-header h2 {
-  font-size: 0.8rem;
-  font-weight: 600;
-  color: #94a3b8;
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: var(--cream-dim);
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.08em;
 }
+
 .price-cap-badge {
   font-size: 0.68rem;
-  background: rgba(251,191,36,0.15);
-  color: #fbbf24;
-  border: 1px solid rgba(251,191,36,0.3);
-  padding: 2px 8px;
+  font-weight: 600;
+  background: var(--orange-faint);
+  color: var(--orange);
+  border: 1px solid var(--orange-mid);
+  padding: 2px 9px;
   border-radius: 99px;
 }
 
@@ -189,32 +265,38 @@ html, body {
 }
 
 .empty-state {
-  color: #475569;
+  color: var(--cream-lo);
   font-size: 0.82rem;
+  font-weight: 600;
   text-align: center;
   padding: 20px 0;
+  line-height: 1.8;
 }
 
-/* ── Property card ────────────────────────────────────────────────────────── */
+/* ── Property card ─────────────────────────────────────────────────────────── */
 .property-card {
-  background: #0f172a;
-  border: 1px solid #334155;
-  border-radius: 10px;
-  padding: 10px 12px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 11px 13px;
   margin-bottom: 8px;
   cursor: pointer;
-  transition: border-color 0.2s, transform 0.15s;
+  transition: border-color 0.2s, box-shadow 0.2s, transform 0.15s;
 }
-.property-card:hover  { border-color: #3b82f6; }
-.property-card:active { transform: scale(0.98); }
+.property-card:hover {
+  border-color: var(--teal);
+  box-shadow: 0 2px 14px var(--teal-faint);
+}
+.property-card:active { transform: scale(0.99); }
 
 .property-card.new {
-  border-color: #10b981;
+  border-color: var(--yellow);
   animation: newCard 3s ease forwards;
 }
+
 @keyframes newCard {
-  0%   { background: rgba(16,185,129,0.15); }
-  100% { background: #0f172a; }
+  0%   { background: var(--yellow-faint); }
+  100% { background: var(--bg-card); }
 }
 
 .card-row {
@@ -225,85 +307,100 @@ html, body {
 }
 
 .prop-price {
-  font-size: 1.05rem;
-  font-weight: 700;
-  color: #fbbf24;
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--orange);
 }
 
 .prop-type {
-  font-size: 0.7rem;
-  color: #64748b;
-  background: #1e293b;
-  padding: 2px 7px;
+  font-size: 0.65rem;
+  font-weight: 600;
+  color: var(--cream-dim);
+  background: var(--bg-deep);
+  padding: 2px 8px;
   border-radius: 99px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
 }
 
 .prop-address {
-  font-size: 0.82rem;
-  color: #cbd5e1;
+  font-size: 0.83rem;
+  font-weight: 600;
+  color: var(--cream);
   margin-top: 3px;
 }
 
 .prop-meta {
   font-size: 0.72rem;
-  color: #64748b;
-  margin-top: 4px;
+  color: var(--cream-dim);
+  margin-top: 3px;
 }
 
 .prop-link {
   display: inline-block;
   margin-top: 6px;
   font-size: 0.72rem;
-  color: #60a5fa;
+  font-weight: 600;
+  color: var(--teal);
   text-decoration: none;
 }
-.prop-link:hover { text-decoration: underline; }
-
-/* ── Leaflet overrides ────────────────────────────────────────────────────── */
-.leaflet-popup-content-wrapper {
-  background: #1e293b;
-  color: #f1f5f9;
-  border: 1px solid #334155;
-  border-radius: 10px;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+.prop-link:hover {
+  color: var(--cream);
+  text-decoration: underline;
 }
-.leaflet-popup-tip { background: #1e293b; }
-.leaflet-popup-content { margin: 10px 12px; font-size: 0.82rem; width: 220px !important; }
-.leaflet-popup-content a { color: #60a5fa; }
 
-/* ── Price pin markers ────────────────────────────────────────────────────── */
+/* ── Leaflet overrides ─────────────────────────────────────────────────────── */
+.leaflet-popup-content-wrapper {
+  background: var(--bg-card);
+  color: var(--cream);
+  border: 1px solid var(--border-hi);
+  border-radius: 12px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.35);
+}
+.leaflet-popup-tip        { background: var(--bg-card); }
+.leaflet-popup-content    { margin: 10px 13px; font-size: 0.82rem; width: 220px !important; font-family: inherit; }
+.leaflet-popup-content a  { color: var(--teal); font-weight: 600; }
+
+/* ── Price pin markers ─────────────────────────────────────────────────────── */
 .price-pin {
-  background: #1e40af;
-  color: #fff;
+  background: var(--bg-deep);
+  color: var(--orange);
+  font-family: 'Outfit', sans-serif;
   font-size: 0.68rem;
-  font-weight: 700;
-  padding: 3px 7px;
+  font-weight: 800;
+  padding: 3px 8px;
   border-radius: 99px;
-  border: 2px solid #fff;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+  border: 1.5px solid var(--orange);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
   white-space: nowrap;
 }
+
 .price-pin::after {
   content: '';
   position: absolute;
-  left: 50%; bottom: -6px;
+  left: 50%; bottom: -7px;
   transform: translateX(-50%);
   border: 4px solid transparent;
-  border-top-color: #fff;
+  border-top-color: var(--orange);
 }
 
-/* ── User location dot ────────────────────────────────────────────────────── */
+/* ── User location dot ─────────────────────────────────────────────────────── */
 .user-location-icon {
-  background: #3b82f6;
-  border: 3px solid #fff;
+  background: var(--orange);
+  border: 3px solid var(--bg-deep);
   border-radius: 50%;
-  box-shadow: 0 0 0 4px rgba(59,130,246,0.3);
+  box-shadow: 0 0 0 3px var(--teal-mid), 0 2px 8px rgba(0,0,0,0.3);
   touch-action: none;
   cursor: grab;
 }
 
-/* ── Responsive ───────────────────────────────────────────────────────────── */
+/* ── Scrollbar ─────────────────────────────────────────────────────────────── */
+.property-list::-webkit-scrollbar       { width: 4px; }
+.property-list::-webkit-scrollbar-track { background: transparent; }
+.property-list::-webkit-scrollbar-thumb { background: var(--cream-lo); border-radius: 99px; }
+
+/* ── Responsive ────────────────────────────────────────────────────────────── */
 @media (min-width: 768px) {
   .bottom-panel { max-height: 320px; }
-  .btn { font-size: 0.88rem; padding: 10px 14px; }
+  .btn          { font-size: 0.88rem; padding: 11px 16px; }
 }
